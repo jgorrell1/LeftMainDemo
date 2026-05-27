@@ -1,0 +1,29 @@
+HttpRequest req = new HttpRequest();
+req.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionID());
+req.setHeader('Content-Type', 'application/json');
+String domainUrl=URL.getSalesforceBaseUrl().toExternalForm();
+system.debug('********domainUrl:'+domainUrl);
+req.setEndpoint(domainUrl+'/services/data');
+req.setMethod('GET');
+
+Http h = new Http();
+HttpResponse res = h.send(req);
+system.debug(res.getBody()); 
+
+String response=res.getBody();
+String apiVersion='';
+List<decimal> versionList=new List<decimal>();
+JSONParser  parser = JSON.createParser(Response);
+while (parser.nextToken() != null) {
+    if ((parser.getCurrentToken() == JSONToken.FIELD_NAME)){
+    String fieldName = parser.getText();
+        if(fieldName == 'version'){
+        parser.nextToken(); 
+            versionList.add(decimal.valueof(parser.getText()));
+        }
+    }
+}
+versionList.sort();
+system.debug('*******versionList'+versionList);
+system.debug('******Current API version:'+versionList[versionList.size()-1]);
+//return versionList[versionList.size()-1];

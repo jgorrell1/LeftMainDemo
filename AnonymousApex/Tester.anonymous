@@ -1,0 +1,2 @@
+SObject[] testObjects = EmailUtilityController.getRelatedEmailMessages('500O800000GV11pIAD','ParentId');
+System.debug(JSON.serializePretty(testObjects));

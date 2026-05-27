@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <name>ApprovalProcess</name>
+        <members>*</members>
+    </types>
+    <types>
+        <name>EmailTemplate</name>
+        <members>unfiled$public/RAMP_DealWon</members>
+        <members>unfiled$public/RAMP_DealLost</members>
+        <members>unfiled$public/RAMP_NewMarketedDeal</members>
+    </types>
+    <types>
+        <name>Flow</name>
+        <members>*</members>
+    </types>
+    <types>
+        <name>QuickAction</name>
+        <members>*</members>
+    </types>
+    <types>
+        <name>Workflow</name>
+        <members>*</members>
+    </types>
+    <types>
+        <name>WorkflowAlert</name>
+        <members>*</members>
+    </types>
+    <types>
+        <name>WorkflowFieldUpdate</name>
+        <members>*</members>
+    </types>
+    <types>
+        <name>WorkflowOutboundMessage</name>
+        <members>*</members>
+    </types>
+    <types>
+        <name>WorkflowRule</name>
+        <members>*</members>
+    </types>
+    <types>
+        <name>WorkflowTask</name>
+        <members>*</members>
+    </types>
+<version>57.0</version>
+</Package>

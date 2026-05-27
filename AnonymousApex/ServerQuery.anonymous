@@ -1,0 +1,57 @@
+Http httpProtocol = new Http();
+HttpRequest request = new HttpRequest();
+String token = MapControllerV2.getToken();
+String recordId = 'a00f400000UZ4mDAAT'; //6 records
+//String recordId = 'a005G00000aPoOdQAK'; //30974 record
+String url = 'https://srp-maps.com/arcgis/rest/services/AppServices/SF_TractHistory/MapServer/1/query';
+String bodyParam;
+Integer loopCounter = 0;
+Integer resultCount = 20000;
+Integer offset = 0;
+//bodyParam = 'where=recordId__c=\'' + recordId + '\'+AND+fieldNameIndex__c+IN+%28%27percentcovered__c%27%2C+%27targetprice__c%27%2C+%27' +
+//        'aoinetacres__c%27%2C+%27maxprice__c%27%29+AND+changedBy__c+%3D+%27005f4000001hD39AAE%27&text=' + 
+//        '&objectIds=&time=&timeRelation=esriTimeRelationOverlaps&geometry=&' +
+//        'geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&distance=&units=esriSRUnit_Foot&relationParam=&' +
+//        'outFields=sObjectNameIndex__c%2C+recordId__c%2C+historyCreatedDate__c%2C+action__c%2C+fieldNameIndex__c&returnGeometry=false&' +
+//        'returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&havingClause=&returnIdsOnly=false&returnCountOnly=false&' + 
+//        'orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&historicMoment=&returnDistinctValues=false' +
+//        '&resultOffset=&resultRecordCount=&returnExtentOnly=false&sqlFormat=none&datumTransformation=&parameterValues=&rangeValues=&' + 
+//        'quantizationParameters=&featureEncoding=esriDefault&f=json&token=' + token;
+
+bodyParam = 'where=recordId__c=\'' + recordId + '\'+AND+fieldNameIndex__c+IN+%28%27percentcovered__c%27%2C+%27targetprice__c%27%2C+%27aoinetacres__c%27%2C+%27maxprice__c%27%29+AND+changedBy__c%3D%27005f4000001hD39AAE%27+&text=&objectIds=&time=&timeRelation=esriTimeRelationOverlaps&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&distance=&units=esriSRUnit_Foot&relationParam=&outFields=sObjectNameIndex__c%2C+recordId__c%2C+historyCreatedDate__c%2C+action__c%2C+fieldNameIndex__c&returnGeometry=false&returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&havingClause=&returnIdsOnly=false&returnCountOnly=false&orderByFields=sObjectNameIndex__c+ASC%2C+recordId__c+ASC%2C+historyCreatedDate__c+ASC%2C+action__c+ASC%2C+fieldNameIndex__c+ASC&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion=&historicMoment=&returnDistinctValues=false&resultOffset='+offset+'&resultRecordCount='+resultCount+'&returnExtentOnly=false&sqlFormat=none&datumTransformation=&parameterValues=&rangeValues=&quantizationParameters=&featureEncoding=esriDefault&f=json&token=' + token;
+request.setMethod('POST');
+
+request.setEndpoint(url);
+request.setBody(bodyParam);
+
+//Use to test timeout error
+//request.setTimeout(1);
+//request.setTimeout(20000);
+
+
+HttpResponse response;
+response = httpProtocol.send(request);
+//System.debug('map resp:'+response);
+System.debug('map resp body: ' + response.getBody());
+SRPHistoryIndex values = SRPHistoryIndex.parse(response.getBody());
+if(values.exceededTransferLimit != null && values.exceededTransferLimit){
+    loopCounter++;
+    offset = loopCounter * resultCount;
+}
+else{
+    loopCounter = 0;
+    offset = 0;
+}
+System.debug('loopCounter value is: ' + loopCounter + ' offset value is: ' + offset);
+System.debug('values size is: ' + values.features.size());
+for (SRPHistoryIndex.features feature: values.features){
+    System.debug(feature);
+}
+//system.debug('Heap size is'+ limits.getHeapSize() + ' ==== '+ Limits.getLimitHeapSize());
+//System.debug('count of records is: '  + response.getBody().features.size());
+
+SRPFieldHistoryDeleteById.deleteSRPFieldHistory();
+
+Datetime dt = Datetime.newInstance(2022,01,01);
+Long msValue = dt.getTime();
+System.debug('Long value of date is: ' + msValue);

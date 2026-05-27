@@ -1,0 +1,12 @@
+public class InsightsWellRequest{
+	String text = '';
+	String pageSize = '100';
+	String pageNumber = '1';
+}
+
+InsightsWellRequest testData = new InsightsWellRequest();
+testData.text = 'Testing \\ ';
+JSONGenerator gen = JSON.createGenerator(true);
+gen.writeStartObject();
+gen.writeStringField('text', testData.text);
+System.debug(gen.getAsString());

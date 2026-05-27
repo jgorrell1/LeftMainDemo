@@ -1,0 +1,31 @@
+String sObjectTypeName = 'Opportunity';
+
+describerUtil describerUtility = new describerUtil();
+describerUtility.selectedObject = sObjectTypeName;
+Map<String, Schema.SObjectField> fieldMap = describerUtility.getFields();
+Map<String, Set<Id>> lookupMap = new Map<String, Set<Id>>();
+Map<Id, String> lookupNames = new Map<Id, String>();
+List<SRPFieldHistorySetting__mdt> fieldSettings = [SELECT blacklist__c, excludeFormulaFields__c, objectAPIName__c, whitelist__c FROM SRPFieldHistorySetting__mdt WHERE objectAPIName__c = :sObjectTypeName LIMIT 1];
+List<String> whitelist = new List<String>();
+List<String> blacklist = new List<String>();
+Integer fieldCount = 0;
+Boolean excludeFormulaFields = false;
+
+if(fieldSettings.size() > 0){
+    System.debug('Setting field settings');
+    if(fieldSettings[0].whitelist__c != null){
+        whitelist = fieldSettings[0].whitelist__c.split('\\|');
+    }
+    if(fieldSettings[0].blacklist__c != null){
+        blacklist = fieldSettings[0].blacklist__c.split('\\|');
+    }
+    excludeFormulaFields = fieldSettings[0].excludeFormulaFields__c;
+    System.debug('Whitelist size is: ' + whitelist.size() + ' blacklist size is: ' + blacklist.size() + ' excludeFormulaFields value is: ' + excludeFormulaFields);
+}
+
+for(String fieldName: fieldMap.keySet()){
+    if(srpFieldHistoryUtility.checkFieldHistory(whitelist, blacklist, excludeFormulaFields, fieldMap.get(fieldName))) {
+        fieldCount++;
+    }
+}
+System.debug ('For object ' + sObjectTypeName + ' there are ' + fieldCount + ' fields that should have field history');

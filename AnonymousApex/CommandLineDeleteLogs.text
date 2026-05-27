@@ -1,0 +1,3 @@
+sf force:data:soql:query -q "SELECT Id FROM ApexLog" -r "csv" > apexlogs.csv
+
+sf force:data:bulk:delete -s ApexLog -f apexlogs.csv 

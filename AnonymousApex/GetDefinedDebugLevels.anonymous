@@ -1,0 +1,31 @@
+	HttpRequest req = new HttpRequest();
+	Map<String, String> debugLevels = new Map<String, String>();
+	String developerName = '';
+	String debugLevelId = '';
+	req.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionID()); //Get user Session ID
+	req.setHeader('Content-Type', 'application/json');
+	req.setMethod('GET');
+	String SFdomainUrl=URL.getSalesforceBaseUrl().toExternalForm();
+	string query='Select+DeveloperName,ID+from+DebugLevel';
+
+	req.setEndpoint(SFdomainUrl+'/services/data/v44.0/tooling/query/?q='+query);
+
+	Http h = new Http();
+	HttpResponse response = h.send(req);
+	//system.debug(response.getBody()); 
+	JSONParser parser = JSON.createParser(response.getBody());
+	//Loop through parser to get various value strings from the response body.
+	while (parser.nextToken() != null) {
+			if(String.valueOf(parser.getCurrentName()) == 'DeveloperName'  && String.valueOf(parser.getCurrentToken()) == 'VALUE_STRING'){
+					developerName = parser.getText();
+			}
+			if(String.valueOf(parser.getCurrentName()) == 'Id'  && String.valueOf(parser.getCurrentToken()) == 'VALUE_STRING'){
+					debugLevelId = parser.getText();
+					debugLevels.put(developerName, debugLevelId);
+					developerName = '';
+					debugLevelId = '';
+			}
+              
+			//System.debug('Current Name is: ' + parser.getCurrentName() + ' Token is: ' + parser.getCurrentToken() + ' Token value is: ' + parser.getText());
+	}
+	System.debug(debugLevels); 

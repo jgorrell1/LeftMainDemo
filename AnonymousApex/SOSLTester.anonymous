@@ -1,0 +1,13 @@
+List<List<SObject>> searchResults;
+String newTerm = '*glass*';
+String accountid = '001f4000017UL1IAAW';
+
+
+searchResults = [
+                    FIND :newTerm
+                    IN NAME FIELDS
+                    RETURNING
+                        
+                        Landgridtract__c(Id WHERE Id IN (SELECT landgridtract__c FROM Tract__c WHERE account__c = :accountId)) LIMIT 100
+                ];
+System.debug('Results: ' + JSON.serializePretty(searchResults));

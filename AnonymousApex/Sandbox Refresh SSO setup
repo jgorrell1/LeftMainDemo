@@ -1,0 +1,16 @@
+SSO Settings are under Settings > Identity
+
+SAML Identity Type:
+Assertion contains the Federation ID from the User object
+
+Single Sign-On Settings: Check SAML Enabled
+
+Single Sign-On > STS settings > Edit, set custom logout URL to : https://srp-tx--staging.lightning.force.com (demo sandbox:https://srp-tx--demo.lightning.force.com)
+
+Session Settings >  Logout page Settings > Logout URL: 
+Staging:
+https://srp-tx--staging.sandbox.lightning.force.com
+Demo:
+https://srp-tx--demo.sandbox.lightning.force.com
+
+Settings > Company Settings > My Domain > Authentication Configuration > Edit: Set Authentication Service to sts.  Uncheck "Login Form".

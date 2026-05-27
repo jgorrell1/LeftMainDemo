@@ -1,0 +1,19 @@
+//list<objectClass> standardObjList{get;set;}
+//list<objectClass> customObjList{get;set;}   
+FINAL integer numberOfObject;
+set<string> objectSet{get;set;}
+//This is a variable to check if we're done with the Iteration.
+string isIterationDone{get;set;}
+
+//customObjList  = new list<objectClass> ();
+//standardObjList = new list<objectClass> ();
+objectSet= new set<string>();
+list<schema.sObjectType> allObjects = Schema.getGlobalDescribe().Values();
+//get number of objects available for iteration.
+numberOfObject = allObjects.size();
+isIterationDone = 'No';
+System.debug('number of Objects is: '+ numberOfObject);
+
+for(Schema.SObjectType currentObject:allObjects){
+	System.debug('Object Name is: ' + currentObject.getDescribe().getName() + ' Prefix is: ' + currentObject.getDescribe().getKeyPrefix());
+}

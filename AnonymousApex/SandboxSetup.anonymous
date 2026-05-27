@@ -1,0 +1,34 @@
+List<String> userIds = new List<String>();
+List<User> sandboxUsers = new List<User>();
+
+userIds.add('005f4000005E1GKAA0');//John Gorrell
+userIds.add('005f4000001hBZpAAM');//Wes Brown
+userIds.add('005f4000001hBKxAAM');//Quin Cogdell
+userIds.add('005f4000001hD39AAE');//Andrew Kock
+userIds.add('0055G000007GEntQAG');//Hank Royce
+userIds.add('005f4000005EOIqAAO');//Kristin Wilpitz
+userIds.add('005f4000005TAOpAAO');//Seth Lincoln
+userIds.add('0055G000005UbUsQAK');//Mikhail Gorditsa
+userIds.add('005f40000049z4KAAQ');//Chris Kennedy
+//userIds.add('005f4000002l7LGAAY');//Mead Robuck
+userIds.add('005AJ000000JE0WYAW');//JR Gorrell
+//userIds.add('005Nr000001F942IAC');//Claudia Cheung
+userIds.add('0055G000008PmpaQAC');//Erin Garcia
+userIds.add('005Nr000008N80HIAS');//Jason Todd
+userIds.add('005Nr000008N8JdIAK');//Johnathan LeClear
+userIds.add('005Nr000008N50oIAC');//Bhargav Raju
+userIds.add('005Nr000008N8ujIAC');//Piyush Gupta
+userIds.add('005Nr00000AO8LFIA1');//Ajay Thapliyal
+userIds.add('005Nr00000AO8MrIAL');//Shahrukh Khan
+userIds.add('005Nr00000AhL0DIAV');//Vijay Kumar
+
+sandboxUsers = [SELECT Email,Id,Name,Username FROM User WHERE Id IN :userIds];
+
+for(User u:sandboxUsers){
+	u.Email = u.Email.replace('.invalid', '');
+	u.isActive = true;
+}
+
+if(sandboxUsers.size() > 0){
+	update sandboxUsers;
+}

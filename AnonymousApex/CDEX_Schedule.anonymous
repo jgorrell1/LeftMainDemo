@@ -1,0 +1,32 @@
+/*CDEX_CreateEnergyLinkScheduler newScheduler = new CDEX_CreateEnergyLinkScheduler();
+String newSchedule = '0 20 13 1/1 * ? *';
+System.schedule('CDEX Create Energy Link Scheduler', newSchedule, newScheduler);
+*/
+
+/*CDEX_ImportChecksScheduler j = new CDEX_ImportChecksScheduler ();
+String sch = '0 12 16 1/1 * ? *';
+System.schedule('CDEX Import Checks', sch, j);
+*/
+
+/*CDEX_SendNotificationsSchedule newNotification = new CDEX_SendNotificationsSchedule();scheduled
+String notificationSchedule = '0 00 14 1/1 * ? *';
+System.schedule('CDEX Send Notification Schedule', notificationSchedule, newNotification);
+*/
+
+/*CDEX_ImportChecksScheduler j = new CDEX_ImportChecksScheduler ();
+String sch = '0 53 22 1/1 * ? *';
+System.schedule('CDEX Import Checks', sch, j);
+*/
+
+/*StaticResourceUpdateScheduler j = new StaticResourceUpdateScheduler ();
+String sch = '0 00 23 1/1 * ? *';
+System.schedule('Insights Response Static Resource Update', sch, j);
+
+StaticResourceUpdateScheduler j = new StaticResourceUpdateScheduler ();
+String sch = '0 44 17 1/1 * ? *';
+System.schedule('Insights Response Static Resource Update', sch, j);
+*/
+
+CommissionJobScheduler j = new CommissionJobScheduler();
+String sch = '0 00 01 1/1 * ? *';
+System.schedule('Potential Commission Update', sch, j);

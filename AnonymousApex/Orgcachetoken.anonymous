@@ -1,0 +1,8 @@
+String cacheKey = 'ClientGISToken';
+String cacheKey2 = 'GIStoken2';
+if (Cache.Org.contains(cacheKey)){
+    Cache.Org.remove(cacheKey);
+}
+if(Cache.Org.contains(cacheKey2)){
+    Cache.org.remove(cacheKey2);
+}

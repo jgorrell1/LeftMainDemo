@@ -1,0 +1,33 @@
+
+        
+APIConfig__mdt config = [Select endpointURL__c,token__c from APIConfig__mdt WHERE DeveloperName = 'Insights'  limit 1];
+System.debug('Config information is endpointURL: ' + config.endpointURL__C + ' token: ' + config.token__c);
+Http http = new Http();
+HttpRequest request = new HttpRequest();
+request.setEndpoint(config.EndpointURL__c+'service_accounts/1/queries/wells');
+request.setMethod('POST');
+request.setHeader('Accept', '*/*');
+request.setHeader('Accept-Encoding', 'application/json');
+request.setHeader('Content-Type', 'application/json');
+request.setHeader('Authorization', 'Bearer '+config.Token__c);
+request.setTimeout(60000);
+        
+//Set the body as a JSON object
+String bodyStr = '{"text":"shooter mcgavin"}';
+//request.setBody('{"from": "'+bodyStr+'"}');
+        
+request.setBody(bodyStr);
+HttpResponse response = http.send(request);
+// Parse the JSON response
+System.debug(response);
+if (response.getStatusCode() != 201) {
+    System.debug('The status code returned was not expected: ' +
+        response.getStatusCode() + ' ' + response.getStatus());
+} else {
+	InsightsWellData wellResults = new InsightsWellData();
+    wellResults = InsightsWellData.parse(response.getBody());
+	for(InsightsWellData.Results result : wellResults.results){
+		System.debug ('API10 value is: ' + result.uwi);
+	}        
+	//System.debug(wellResults);
+}

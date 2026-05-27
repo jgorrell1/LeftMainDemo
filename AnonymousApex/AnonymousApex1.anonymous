@@ -1,0 +1,66 @@
+/*Id objId = '001f400000U9h5lAAB';
+Set <Id> subIds = new Set<Id>();
+List<Subtract__c> subs = [SELECT Id FROM Subtract__c WHERE Tract__r.Account__c =: objId];
+subIds = Util.getIds(subs);
+
+
+List<AggregateResult> ownerInterestRevenues = [SELECT monthlyProduction__r.Well__c,
+                SUM(ownerNetRevenueValueGas__c) gasRevenue,SUM(ownerNetRevenueValueOil__c) oilRevenue
+                FROM revenueEstimate__c 
+                WHERE unitAllocation__r.Subtract__c IN: subIds AND Inactive__c = false
+				GROUP BY monthlyProduction__r.Well__c];
+
+for(AggregateResult ownerInterestRevenue:ownerInterestRevenues){
+			System.debug(ownerInterestRevenue);
+		}
+
+WellUnitUtil.WellUnitUtilInfo currentInfo = WellUnitUtil.getWellInfo('001f400000U9h5lAAB');
+*/
+
+String token = MapControllerV2.getToken();
+
+Map<Id,Decimal> oirGasWellMap = new Map<Id,Decimal>();
+Map<Id,Decimal> oirOilWellMap  = new Map<Id,Decimal>();
+Map_Setting__mdt metaInfo = [SELECT Id, Web_Service_URL__c FROM Map_Setting__mdt WHERE MasterLabel ='RevenueEstimateByAccount'];
+String requestURL = metaInfo.Web_Service_URL__c;
+String url = requestURL + '/query';
+String whereClause = 'where=AccountId = \'001f400000U9h5lAAB\'';			
+String bodyParam = whereClause + '&text=&objectIds=&time=&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&relationParam=&outFields=*&returnGeometry=true&returnTrueCurves=false&maxAllowableOffset='+
+								 '&geometryPrecision=&outSR=&having=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&gdbVersion='+
+								 '&historicMoment=&returnDistinctValues=false&resultOffset=&resultRecordCount=&queryByDistance=&returnExtentOnly=false&datumTransformation=&parameterValues=&rangeValues='+
+								 '&quantizationParameters=&featureEncoding=esriDefault&f=json&token=' + token;
+				
+Http httpProtocol = new Http();
+HttpRequest request = new HttpRequest();				
+System.debug('endpoint:'+url);
+System.debug('body:'+bodyParam);
+System.debug('fullURL:'+url+bodyParam);
+request.setMethod('POST');
+
+request.setEndpoint(url);
+request.setBody(bodyParam);
+request.setTimeout(20000);
+			
+//Use to test timeout error
+//request.setTimeout(1);
+//request.setTimeout(20000);
+        
+
+HttpResponse response;
+response = httpProtocol.send(request);
+System.debug('map resp:'+response);
+System.debug('map resp body: ' + response.getBody());
+//mr.bounds = response.getBody();
+
+RevenueEstimateByAccountParser obj = new RevenueEstimateByAccountParser();
+obj = RevenueEstimateByAccountParser.parse(response.getBody());
+//System.debug(obj);
+for(RevenueEstimateByAccountParser.Features cf : obj.features){
+	System.debug('Adding values to maps for well' + cf.attributes.WellId + ' gas value is: ' + cf.attributes.gasRevenue + ' oil value is: ' + cf.attributes.oilRevenue);
+	oirGasWellMap.put(cf.attributes.WellId, cf.attributes.gasRevenue);
+	oirOilWellMap.put(cf.attributes.WellId, cf.attributes.oilRevenue);
+}
+System.debug(oirGasWellMap);
+System.debug(oirOilWellMap);
+
+

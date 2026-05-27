@@ -1,0 +1,12 @@
+String packageId = '';
+
+packageId = '006AJ000002eLhPYAU';
+
+//InsightsPackageEvaluationHeader[] packageHeaders = InsightsPackageEvaluationUtility.getPackageEvaluations(packageId);
+//System.debug('packageHeaders: ' + JSON.serializePretty(packageHeaders));
+
+//InsightsPackageEvaluationOverview[] packageOverviews = InsightsPackageEvaluationUtility.getPackageOverviews(packageHeaders);
+//System.debug('packageOverviews: ' + JSON.serializePretty(packageOverviews));
+
+InsightsPackageEvaluationOverview[] packageOverviews = InsightsPackageEvaluationUtility.getPackageEvalList(packageId);
+System.debug('packageOverviews: ' + JSON.serializePretty(packageOverviews));

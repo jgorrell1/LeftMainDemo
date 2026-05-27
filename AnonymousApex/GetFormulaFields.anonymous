@@ -1,0 +1,91 @@
+// Anonymous Apex: Export all formula fields *with formula text* using Tooling API (EntityParticle).
+// Requires a Remote Site Setting pointing to your My Domain base URL.
+// Creates "FormulaFields_WithText.csv" in Files.
+
+String apiVersion = 'v61.0'; // adjust if needed
+String baseUrl = URL.getOrgDomainUrl().toExternalForm(); // e.g., https://acme.my.salesforce.com
+
+// Build the SOQL (URL-encoded below)
+String soql =
+    'SELECT EntityDefinition.QualifiedApiName, QualifiedApiName, DataType, CalculatedFormula ' +
+    'FROM EntityParticle ' +
+    'WHERE IsCalculated = true AND DataType != \'Summary\' ' +
+    'ORDER BY EntityDefinition.QualifiedApiName, QualifiedApiName';
+
+// Helper to URL-encode
+String encSoql = EncodingUtil.urlEncode(soql, 'UTF-8');
+String endpoint = baseUrl + '/services/data/' + apiVersion + '/tooling/query?q=' + encSoql;
+
+// CSV builder
+List<String> csvRows = new List<String>();
+csvRows.add('ObjectAPI,FieldAPI,DataType,FormulaText');
+
+// Pagination loop
+String nextUrl = endpoint;
+Integer page = 0;
+
+while (nextUrl != null) {
+    page++;
+    HttpRequest req = new HttpRequest();
+    req.setMethod('GET');
+    req.setEndpoint(nextUrl);
+    req.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionId());
+    req.setHeader('Content-Type', 'application/json');
+    // For Remote Site Settings: the endpoint hostname must match your Remote Site URL
+
+    Http http = new Http();
+    HTTPResponse res = http.send(req);
+    if (res.getStatusCode() != 200) {
+        System.debug('HTTP ' + res.getStatusCode() + ' on page ' + page + ': ' + res.getBody());
+        break;
+    }
+
+    // Parse response
+    Map<String, Object> parsed = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
+    List<Object> records = (List<Object>) parsed.get('records');
+
+    for (Object o : records) {
+        Map<String, Object> rec = (Map<String, Object>) o;
+
+        // Nested EntityDefinition.QualifiedApiName is exposed as a map under 'EntityDefinition'
+        Map<String, Object> entityDef = (Map<String, Object>) rec.get('EntityDefinition');
+        String objApi = (entityDef != null && entityDef.containsKey('QualifiedApiName'))
+            ? String.valueOf(entityDef.get('QualifiedApiName')) : '';
+
+        String fldApi = String.valueOf(rec.get('QualifiedApiName'));
+        String typ    = String.valueOf(rec.get('DataType'));
+        String formula = rec.containsKey('CalculatedFormula') && rec.get('CalculatedFormula') != null
+            ? String.valueOf(rec.get('CalculatedFormula')) : '';
+
+        // CSV escaping: wrap in quotes and double any internal quotes; collapse newlines
+        formula = formula.replace('\r', ' ').replace('\n', ' ');
+        String line =
+            '"' + objApi.replace('"','""') + '",' +
+            '"' + fldApi.replace('"','""') + '",' +
+            '"' + typ.replace('"','""')    + '",' +
+            '"' + formula.replace('"','""') + '"';
+        csvRows.add(line);
+    }
+
+    // nextRecordsUrl (relative) or null
+    String nextRel = (String) parsed.get('nextRecordsUrl');
+    nextUrl = (nextRel != null) ? (baseUrl + nextRel) : null;
+}
+
+// Save CSV to Files
+String csv = String.join(csvRows, '\n');
+Blob body = Blob.valueOf(csv);
+ContentVersion cv = new ContentVersion(
+    Title = 'FormulaFields_WithText',
+    PathOnClient = 'FormulaFields_WithText.csv',
+    VersionData = body
+);
+insert cv;
+
+ContentVersion inserted = [
+    SELECT Id, ContentDocumentId
+    FROM ContentVersion
+    WHERE Id = :cv.Id
+    LIMIT 1
+];
+System.debug('CSV created with ' + csvRows.size() + ' rows. Download from Files. ContentDocumentId = ' + inserted.ContentDocumentId);

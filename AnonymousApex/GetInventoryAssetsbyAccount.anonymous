@@ -1,0 +1,20 @@
+String initialAccountId = '0015G00001e4QyQQAU';
+Date asOfDate = Date.valueOf('2023-12-31');
+
+Account[] allAccounts = EntityUtility.getRelatedAccounts(initialAccountId);
+System.debug('allAccounts: ' + allAccounts);
+String listOfAccountIds = '';
+for(Account a : allAccounts) {
+    listOfAccountIds += '\'' + a.Id + '\',';
+}
+System.debug('listOfAccountIds: ' + listOfAccountIds);
+
+InventoryAsset__c[] allInventoryAssets = [SELECT Id, assetAcquisition__r.Tract__r.Name, assetAcquisition__r.Name, assetSale__c
+                                            FROM InventoryAsset__c
+                                            WHERE assetAcquisition__r.Opportunity__r.Acquiring_Entity__c IN :allAccounts
+                                            AND (assetSale__r.Opportunity__r.CloseDate > :asOfDate
+                                            OR assetSale__c = null)
+                                            AND (assetAcquisition__r.Opportunity__r.CloseDate <= :asOfDate)
+                                            ORDER BY assetAcquisition__r.Tract__r.Name];
+//System.debug('allInventoryAssets: ' + JSON.serializePretty(allInventoryAssets));
+System.debug('Count of Inventory Assets: ' + allInventoryAssets.size());

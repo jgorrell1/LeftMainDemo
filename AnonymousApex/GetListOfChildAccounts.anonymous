@@ -1,0 +1,30 @@
+
+    // This list will store all child accounts
+    List<Account> allChildAccounts = new List<Account>();
+    
+    // This set will store account ids to query in the next iteration
+    Set<Id> accountIdsToQuery = new Set<Id>();
+    accountIdsToQuery.add('0015G00001XnXyJQAV');//SRPO-III Fund Master
+    //accountIdsToQuery.add('001f400001NLquQAAT');//SRPO-II Fund Master
+    //accountIdsToQuery.add('0015G00001W5xGlQAJ');//STOMP-II
+    
+    
+    while(accountIdsToQuery.size() > 0) {
+        // Get child accounts based on current set of account ids
+        List<Account> childAccounts = [SELECT Id, Name, ParentId, Parent.Name FROM Account WHERE ParentId IN :accountIdsToQuery];
+        System.debug('child accounts from query: ' + childAccounts);
+        
+        // Add the child accounts to the final list
+        allChildAccounts.addAll(childAccounts);
+        
+        // Clear the set for the next iteration
+        accountIdsToQuery.clear();
+        
+        // Add the child account ids to the set for the next iteration
+        for(Account acc : childAccounts) {
+            accountIdsToQuery.add(acc.Id);
+        }
+    }
+    System.debug('allChildAccounts: ' + JSON.serialize(allChildAccounts));
+    System.debug('size of child accounts for master account is: ' + allChildAccounts.size());
+

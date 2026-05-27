@@ -1,0 +1,4 @@
+//String energyLinkURL = '/energy_link/checks/1788';
+//String energyLinkURL = '/energy_link/checks/2879';
+String energyLinkURL = '/energy_link/checks/5835';
+CDEXCalloutHelper.getCheckBody(energyLinkURL, null);

@@ -1,0 +1,18 @@
+Id[] unitIds = new Id[]{};
+Date oppEffectiveDate = null; 
+oppEffectiveDate = Date.valueOf('2021-05-19');
+Date priceLockDate = null;
+priceLockDate = Date.valueOf('2021-05-19');
+
+unitIds.add('a06f400000D4opxAAB');
+unitIds.add('a06f400000Ac1qoAAB');
+unitIds.add('a065G00000JSdYuQAL');
+
+//Units without current evals
+unitIds.add('a06AJ000000LxWHYA0'); //U-0000132818
+unitIds.add('a06AJ000000LxY3YAK'); //U-0000132819
+unitIds.add('a06AJ000000LxfaYAC'); //U-0000132820
+UnitPricing__c[] InsightsPricingResult = InsightsPricingUtility.getUnitPricing(unitIds, priceLockDate, oppEffectiveDate);
+
+//Date testDate = Date.valueOf('2023-05-19T00:37:04Z');
+//System.debug ('testDate: ' + testDate);
