@@ -1,0 +1,50 @@
+<template>
+    <lightning-card>
+        <div class="slds-card__body slds-card__body_inner">
+            <!-- Display record count -->
+            <template if:true={hasOpportunities}>
+                <div class="slds-text-body_small slds-m-bottom_small slds-p-horizontal_small">
+                    <strong>{recordCount}</strong> open opportunities
+                </div>
+            </template>
+
+            <!-- Data Table -->
+            <template if:true={hasOpportunities}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={opportunities}
+                    columns={columns}
+                    hide-checkbox-column
+                    show-row-number-column
+                    onsort={handleSort}
+                    sorted-by={sortBy}
+                    sorted-direction={sortDirection}
+                    resize-column-disabled>
+                </lightning-datatable>
+            </template>
+
+            <!-- No Data Message -->
+            <template if:false={hasOpportunities}>
+                <template if:false={error}>
+                    <div class="slds-align_absolute-center slds-m-vertical_large">
+                        <lightning-icon icon-name="utility:info" size="small" alternative-text="Info"></lightning-icon>
+                        <p class="slds-m-left_small">No open opportunities found.</p>
+                    </div>
+                </template>
+            </template>
+
+            <!-- Error Message -->
+            <template if:true={error}>
+                <div class="slds-m-around_medium">
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                        <span class="slds-assistive-text">error</span>
+                        <h2>
+                            <lightning-icon icon-name="utility:error" size="x-small" variant="inverse" class="slds-m-right_x-small"></lightning-icon>
+                            Error loading opportunities: {error.body.message}
+                        </h2>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

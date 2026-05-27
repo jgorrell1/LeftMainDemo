@@ -11,63 +11,38 @@
         <won>false</won>
     </standardValue>
     <standardValue>
-        <fullName>Qualification</fullName>
+        <fullName>Due Diligence</fullName>
         <default>false</default>
-        <label>Qualification</label>
-        <closed>false</closed>
-        <forecastCategory>Pipeline</forecastCategory>
-        <probability>10</probability>
-        <won>false</won>
-    </standardValue>
-    <standardValue>
-        <fullName>Needs Analysis</fullName>
-        <default>false</default>
-        <label>Needs Analysis</label>
+        <description>Stage for completing due diligence tasks</description>
+        <label>Due Diligence</label>
         <closed>false</closed>
         <forecastCategory>Pipeline</forecastCategory>
         <probability>20</probability>
         <won>false</won>
     </standardValue>
     <standardValue>
-        <fullName>Value Proposition</fullName>
+        <fullName>Negotiation/Review</fullName>
         <default>false</default>
-        <label>Value Proposition</label>
+        <label>Negotiation/Review</label>
         <closed>false</closed>
         <forecastCategory>Pipeline</forecastCategory>
-        <probability>50</probability>
+        <probability>40</probability>
         <won>false</won>
     </standardValue>
     <standardValue>
-        <fullName>Id. Decision Makers</fullName>
+        <fullName>Offer Pending</fullName>
         <default>false</default>
-        <label>Id. Decision Makers</label>
+        <label>Offer Pending</label>
         <closed>false</closed>
         <forecastCategory>Pipeline</forecastCategory>
         <probability>60</probability>
         <won>false</won>
     </standardValue>
     <standardValue>
-        <fullName>Perception Analysis</fullName>
+        <fullName>Under Contract</fullName>
         <default>false</default>
-        <label>Perception Analysis</label>
-        <closed>false</closed>
-        <forecastCategory>Pipeline</forecastCategory>
-        <probability>70</probability>
-        <won>false</won>
-    </standardValue>
-    <standardValue>
-        <fullName>Proposal/Price Quote</fullName>
-        <default>false</default>
-        <label>Proposal/Price Quote</label>
-        <closed>false</closed>
-        <forecastCategory>Pipeline</forecastCategory>
-        <probability>75</probability>
-        <won>false</won>
-    </standardValue>
-    <standardValue>
-        <fullName>Negotiation/Review</fullName>
-        <default>false</default>
-        <label>Negotiation/Review</label>
+        <description>Once contract has been agreed to.</description>
+        <label>Under Contract</label>
         <closed>false</closed>
         <forecastCategory>Pipeline</forecastCategory>
         <probability>90</probability>

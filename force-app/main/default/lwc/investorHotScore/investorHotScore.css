@@ -1,0 +1,17 @@
+/* Custom styling for Investor Hot Score component */
+
+.slds-card__body_inner {
+    padding: 0;
+}
+
+/* Ensure data table fills the card */
+lightning-datatable {
+    min-height: 300px;
+}
+
+/* Center the no data message */
+.slds-align_absolute-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

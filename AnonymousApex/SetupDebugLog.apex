@@ -57,19 +57,11 @@ String debugLevelId = '';
 	//Dev1 Values
 
 		   //Debug Level IDs                                      
-				  debugLevelId = '7dlf4000000Pn0SAAS';     //SFDC_DevConsole    
+				  debugLevelId = '7dlg5000001JyW9AAK';     //SFDC_DevConsole    
 				  //debugLevelId = '7dlq0000000088NAAQ';   //TheWelkinSuite_005q0000005ZpRdAAK                           
 
 		   //UserIds
-				  userIds.add('005f4000005E1GKAA0');//John
-				  //userIds.add('005f4000001hBKxAAM');//Quin
-				  //userIds.add('005f4000004oY0lAAE');//Jade
-				  //userIds.add('005q0000005ZpfuAAC');//Janet
-				  //userIds.add('005f4000004AR6kAAG');//Peter
-				  //userIds.add('005f4000004AR6lAAG');//Brian
-                  //userIds.add('005AJ000000IPZq');//Davione Andrews - standard user testing
-				  //userIds.add('005f4000002l7LGAAY');//Mead
-				  //userIds.add('0055G000008PKsLQAW');//API User
+				  userIds.add('005g5000007R1GvAAK');//John
 
 
 	//Loop through users 

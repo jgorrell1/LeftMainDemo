@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Due_Diligence_Complete</fullName>
+    <active>true</active>
+    <description>Fire if the opportunity has already had a completed Due Diligence case.</description>
+    <errorConditionFormula>AND(
+    ISCHANGED(StageName),
+    ISPICKVAL(StageName, &quot;Due Diligence&quot;),
+    NOT(ISBLANK(Due_Diligence_Case__c))
+)</errorConditionFormula>
+    <errorMessage>Due Diligence has already been completed for this opportunity.  Please select a different stage.</errorMessage>
+</ValidationRule>

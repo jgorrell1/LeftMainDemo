@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Due_Diligence_must_be_closed</fullName>
+    <active>true</active>
+    <description>Related Due Diligence case must be closed before you can move the Opportunity Stage out of due diligence.</description>
+    <errorConditionFormula>AND(
+    ISCHANGED(StageName),
+    TEXT(PRIORVALUE(StageName)) = &quot;Due Diligence&quot;,
+    NOT(ISPICKVAL(StageName, &quot;Due Diligence&quot;)),
+    Due_Diligence_Case__r.IsClosed == false
+)</errorConditionFormula>
+    <errorMessage>Please ensure the related Due Diligence Case is closed before moving the opportunity out of Due Diligence Stage</errorMessage>
+</ValidationRule>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Due_Diligence_Case__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Used to relate due diligence case to this opportunity</description>
+    <label>Due Diligence Case</label>
+    <referenceTo>Case</referenceTo>
+    <relationshipLabel>Opportunities</relationshipLabel>
+    <relationshipName>Opportunities</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

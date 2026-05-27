@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Queue xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Queue for Due Diligence cases</description>
+    <doesSendEmailToMembers>true</doesSendEmailToMembers>
+    <email>jgorrell2+lmdemo@gmail.com</email>
+    <name>Due Diligence</name>
+    <queueMembers>
+        <users>
+            <user>jgorrell2.a3cd8f0be04a@agentforce.com</user>
+        </users>
+    </queueMembers>
+    <queueSobject>
+        <sobjectType>Case</sobjectType>
+    </queueSobject>
+</Queue>
